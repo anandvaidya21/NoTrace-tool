@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoTrace | Secure Data Wiping for Trustworthy IT Asset Recycling</title>
+    <meta name="description" content="NoTrace provides secure, verifiable data wiping solutions for IT asset recycling. Download our free tool for Windows, Linux, and Android to permanently erase sensitive data before device disposal.">
+    <meta property="og:title" content="NoTrace - Secure Data Wiping for IT Asset Recycling">
+    <meta property="og:description" content="Professional data wiping tool ensuring complete data destruction for secure IT asset recycling. Free downloads available for all platforms.">
+    <meta property="og:type" content="website">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom CSS Variables and Animations */
+        :root {
+            --primary: 210 100% 56%;
+            --primary-foreground: 210 40% 95%;
+            --background: 220 25% 8%;
+            --foreground: 210 40% 95%;
+            --muted: 210 15% 12%;
+            --muted-foreground: 210 15% 70%;
+            --card: 220 20% 12%;
+            --card-foreground: 210 40% 95%;
+            --border: 210 15% 18%;
+            --success: 142 76% 36%;
+        }
+
+        .light {
+            --primary: 210 100% 56%;
+            --primary-foreground: 210 40% 98%;
+            --background: 210 40% 98%;
+            --foreground: 220 25% 8%;
+            --muted: 210 15% 90%;
+            --muted-foreground: 210 15% 40%;
+            --card: 210 40% 95%;
+            --card-foreground: 220 25% 8%;
+            --border: 210 15% 88%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, 
+                hsl(var(--background)) 0%, 
+                hsl(var(--primary) / 0.05) 50%, 
+                hsl(var(--background)) 100%
+            );
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--success)));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-hover {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px hsl(var(--primary) / 0.25);
+        }
+
+        .step-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .step-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        .step-card:hover .step-icon {
+            transform: scale(1.1) rotate(12deg);
+        }
+
+        .step-card:hover .step-gradient {
+            opacity: 0.7;
+        }
+
+        .step-card:hover .step-title {
+            color: hsl(var(--primary));
+        }
+
+        .step-card:hover .step-description {
+            color: hsl(var(--foreground));
+        }
+
+        .step-icon {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-gradient {
+            transition: opacity 0.5s ease;
+        }
+
+        .step-title {
+            transition: color 0.5s ease;
+        }
+
+        .step-description {
+            transition: color 0.5s ease;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .btn-primary {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: hsl(var(--primary) / 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px hsl(var(--primary) / 0.3);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: hsl(var(--primary));
+            border: 2px solid hsl(var(--primary));
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background-color: hsl(var(--primary) / 0.1);
+            transform: translateY(-2px);
+        }
+
+        .feature-card {
+            background-color: hsl(var(--card));
+            border: 2px solid hsl(var(--border));
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: hsl(var(--primary) / 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px hsl(var(--primary) / 0.1);
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        .mobile-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Credit text styling */
+        .credit-text {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: hsl(var(--muted-foreground));
+            background: linear-gradient(135deg, 
+                hsl(var(--primary) / 0.05) 0%, 
+                hsl(var(--success) / 0.05) 100%
+            );
+            border-top: 1px solid hsl(var(--border));
+        }
+
+        /* Chatbot Styles */
+        .chatbot-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--success)));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: none;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .chatbot-button i {
+            color: white;
+            width: 24px;
+            height: 24px;
+        }
+
+        .chatbot-modal {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 380px;
+            max-width: calc(100vw - 40px);
+            height: 500px;
+            max-height: calc(100vh - 120px);
+            background-color: hsl(var(--card));
+            border: 2px solid hsl(var(--border));
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+        }
+
+        .chatbot-modal.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--success)));
+            color: white;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chatbot-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .chatbot-close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .chatbot-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbot-tabs {
+            display: flex;
+            border-bottom: 2px solid hsl(var(--border));
+        }
+
+        .chatbot-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: hsl(var(--muted-foreground));
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .chatbot-tab.active {
+            color: hsl(var(--primary));
+            background-color: hsl(var(--primary) / 0.1);
+        }
+
+        .chatbot-tab:hover {
+            background-color: hsl(var(--muted) / 0.5);
+        }
+
+        .chatbot-tab-content {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .chatbot-tab-content.active {
+            display: block;
+        }
+
+        .chatbot-input-container {
+            padding: 16px;
+            border-top: 2px solid hsl(var(--border));
+        }
+
+        .chatbot-input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid hsl(var(--border));
+            border-radius: 8px;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .chatbot-input:focus {
+            border-color: hsl(var(--primary));
+        }
+
+        .chatbot-send {
+            padding: 12px 16px;
+            background-color: hsl(var(--primary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .chatbot-send:hover {
+            background-color: hsl(var(--primary) / 0.9);
+        }
+
+        .faq-item {
+            margin-bottom: 16px;
+            border: 1px solid hsl(var(--border));
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 12px 16px;
+            background-color: hsl(var(--muted) / 0.5);
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .faq-question:hover {
+            background-color: hsl(var(--muted) / 0.7);
+        }
+
+        .faq-answer {
+            padding: 16px;
+            background-color: hsl(var(--card));
+            color: hsl(var(--muted-foreground));
+            line-height: 1.5;
+            display: none;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-icon {
+            transition: transform 0.2s;
+        }
+
+        .chat-message {
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 85%;
+        }
+
+        .chat-message.user {
+            background-color: hsl(var(--primary));
+            color: white;
+            margin-left: auto;
+        }
+
+        .chat-message.bot {
+            background-color: hsl(var(--muted) / 0.5);
+            color: hsl(var(--foreground));
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Mobile responsiveness for chatbot */
+        @media (max-width: 768px) {
+            .chatbot-modal {
+                bottom: 90px;
+                right: 10px;
+                left: 10px;
+                width: auto;
+                max-width: none;
+            }
+
+            .chatbot-button {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+            
+            .steps-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (min-width: 768px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .steps-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b backdrop-blur bg-opacity-80" style="background-color: hsl(var(--background) / 0.95); border-color: hsl(var(--border));">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg text-white" style="background-color: hsl(var(--primary));">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-xl font-bold">NoTrace</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#features" class="font-medium transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">Features</a>
+                    <a href="#how-it-works" class="font-medium transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">How It Works</a>
+                    <a href="#download" class="font-medium transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">Download</a>
+                    <a href="#verification" class="font-medium transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">Verification</a>
+                </nav>
+
+                <!-- CTA Button -->
+                <div class="hidden md:block">
+                    <button class="btn-primary" onclick="scrollToSection('#download')">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2" id="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" class="w-5 h-5" id="menu-icon"></i>
+                    <i data-lucide="x" class="w-5 h-5 hidden" id="close-icon"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div class="mobile-menu md:hidden border-t py-4" style="border-color: hsl(var(--border)); background-color: hsl(var(--background) / 0.95);" id="mobile-nav">
+                <nav class="flex flex-col gap-2">
+                    <a href="#features" class="py-2 font-medium transition-colors" style="color: hsl(var(--muted-foreground));" onclick="closeMobileMenu()">Features</a>
+                    <a href="#how-it-works" class="py-2 font-medium transition-colors" style="color: hsl(var(--muted-foreground));" onclick="closeMobileMenu()">How It Works</a>
+                    <a href="#download" class="py-2 font-medium transition-colors" style="color: hsl(var(--muted-foreground));" onclick="closeMobileMenu()">Download</a>
+                    <a href="#verification" class="py-2 font-medium transition-colors" style="color: hsl(var(--muted-foreground));" onclick="closeMobileMenu()">Verification</a>
+                    <button class="btn-primary mt-2" onclick="scrollToSection('#download'); closeMobileMenu();">
+                        Get Started
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg relative overflow-hidden py-24 lg:py-32">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center space-y-8">
+                <!-- Trust Indicators -->
+                <div class="flex items-center justify-center gap-6 text-sm mb-8" style="color: hsl(var(--muted-foreground));">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="shield" class="h-4 w-4" style="color: hsl(var(--primary));"></i>
+                        <span>DoD 5220.22-M Compliant</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="check-circle" class="h-4 w-4" style="color: hsl(var(--success));"></i>
+                        <span>100% Secure</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="lock" class="h-4 w-4" style="color: hsl(var(--primary));"></i>
+                        <span>Verified Wiping</span>
+                    </div>
+                </div>
+
+                <!-- Main Headline -->
+                <div class="space-y-6">
+                    <h1 class="hero-title text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+                        Wipe with <span class="gradient-text">Trust</span>.<br>
+                        Recycle with <span class="gradient-text">Confidence</span>.
+                    </h1>
+                    <p class="hero-subtitle text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto" style="color: hsl(var(--muted-foreground));">
+                        NoTrace is your free, secure, and verifiable solution to permanently erase data from your old devices, helping you recycle safely and protect our planet.
+                    </p>
+                </div>
+
+                <!-- Call to Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+                    <button class="btn-primary text-lg px-8 py-6 flex items-center gap-2" onclick="scrollToSection('#download')">
+                        Download Now
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                    <button class="btn-outline text-lg px-8 py-6 flex items-center gap-2" onclick="alert('Live demo feature coming soon!')">
+                        <i data-lucide="play" class="w-5 h-5"></i>
+                        Live Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="py-20 lg:py-32" style="background-color: hsl(var(--muted) / 0.3);">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold">
+                    Choose Your Platform
+                </h2>
+                <p class="text-xl max-w-2xl mx-auto" style="color: hsl(var(--muted-foreground));">
+                    Download NoTrace for free and start securely wiping your devices today. All versions include military-grade security standards.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Windows Download -->
+                <div class="card-hover rounded-lg border-2 overflow-hidden relative" style="background-color: hsl(var(--card)); border-color: rgba(59, 130, 246, 0.3);">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 opacity-50"></div>
+                    <div class="relative p-8 text-center space-y-6">
+                        <div class="flex justify-center">
+                            <div class="h-16 w-16 bg-blue-500 rounded-lg flex items-center justify-center">
+                                <span class="text-white font-bold text-2xl">W</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-2xl font-bold">Windows</h3>
+                            <div class="text-sm space-y-1" style="color: hsl(var(--muted-foreground));">
+                                <div>Version v2.1.0</div>
+                                <div>45 MB</div>
+                            </div>
+                        </div>
+                        <p class="leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                            Compatible with Windows 10/11. Full DoD compliance and enterprise features.
+                        </p>
+                        <div class="text-xs rounded-lg p-3" style="color: hsl(var(--muted-foreground)); background-color: hsl(var(--muted) / 0.5);">
+                            <strong>Requirements:</strong> Windows 10+ (64-bit)
+                        </div>
+                        <button class="btn-primary w-full text-lg py-6 flex items-center justify-center gap-2" onclick="downloadPlatform('Windows')">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                            Download for Windows
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Linux Download -->
+                <div class="card-hover rounded-lg border-2 overflow-hidden relative" style="background-color: hsl(var(--card)); border-color: rgba(34, 197, 94, 0.3);">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-500/20 to-green-600/20 opacity-50"></div>
+                    <div class="relative p-8 text-center space-y-6">
+                        <div class="flex justify-center">
+                            <div class="h-16 w-16 bg-green-500 rounded-lg flex items-center justify-center">
+                                <span class="text-white font-bold text-2xl">L</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-2xl font-bold">Linux</h3>
+                            <div class="text-sm space-y-1" style="color: hsl(var(--muted-foreground));">
+                                <div>Version v2.1.0</div>
+                                <div>38 MB</div>
+                            </div>
+                        </div>
+                        <p class="leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                            Universal Linux binary supporting major distributions. Command-line and GUI options.
+                        </p>
+                        <div class="text-xs rounded-lg p-3" style="color: hsl(var(--muted-foreground)); background-color: hsl(var(--muted) / 0.5);">
+                            <strong>Requirements:</strong> Ubuntu 18+, CentOS 7+, or equivalent
+                        </div>
+                        <button class="btn-primary w-full text-lg py-6 flex items-center justify-center gap-2" onclick="downloadPlatform('Linux')">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                            Download for Linux
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Android Download -->
+                <div class="card-hover rounded-lg border-2 overflow-hidden relative" style="background-color: hsl(var(--card)); border-color: rgba(249, 115, 22, 0.3);">
+                    <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-orange-600/20 opacity-50"></div>
+                    <div class="relative p-8 text-center space-y-6">
+                        <div class="flex justify-center">
+                            <div class="h-16 w-16 bg-orange-500 rounded-lg flex items-center justify-center">
+                                <span class="text-white font-bold text-2xl">A</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-2xl font-bold">Android</h3>
+                            <div class="text-sm space-y-1" style="color: hsl(var(--muted-foreground));">
+                                <div>Version v1.8.5</div>
+                                <div>12 MB</div>
+                            </div>
+                        </div>
+                        <p class="leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                            Mobile data wiping for Android devices before disposal or resale.
+                        </p>
+                        <div class="text-xs rounded-lg p-3" style="color: hsl(var(--muted-foreground)); background-color: hsl(var(--muted) / 0.5);">
+                            <strong>Requirements:</strong> Android 8.0+ (API 26)
+                        </div>
+                        <button class="btn-primary w-full text-lg py-6 flex items-center justify-center gap-2" onclick="downloadPlatform('Android')">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                            Download for Android
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enterprise Section -->
+            <div class="text-center mt-16">
+                <div class="max-w-4xl mx-auto rounded-lg p-8" style="background-color: hsl(var(--primary) / 0.05); border: 1px solid hsl(var(--primary) / 0.2);">
+                    <h3 class="text-2xl font-bold mb-4">Enterprise Solutions Available</h3>
+                    <p class="mb-6 max-w-2xl mx-auto" style="color: hsl(var(--muted-foreground));">
+                        Need bulk licensing, custom integrations, or compliance reporting? 
+                        Contact us for enterprise solutions tailored to your organization.
+                    </p>
+                    <button class="btn-outline" onclick="alert('Enterprise contact form coming soon!')">
+                        Contact Enterprise Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 lg:py-32">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold">
+                    Enterprise-Grade Features
+                </h2>
+                <p class="text-xl max-w-3xl mx-auto" style="color: hsl(var(--muted-foreground));">
+                    NoTrace combines military-grade security with user-friendly design to deliver 
+                    the most trusted data wiping solution available.
+                </p>
+            </div>
+
+            <div class="features-grid grid gap-8">
+                <!-- Feature Cards -->
+                <div class="feature-card">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 rounded-lg text-blue-500" style="background-color: hsl(var(--muted) / 0.5);">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Military-Grade Security</h3>
+                    </div>
+                    <p class="leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                        DoD 5220.22-M compliant data wiping with multiple overwrite passes ensuring complete data destruction.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 rounded-lg text-green-500" style="background-color: hsl(var(--muted) / 0.5);">
+                            <i data-lucide="check-circle" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Verification Reports</h3>
+                    </div>
+                    <p class="leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                        Generate detailed compliance reports with cryptographic proof of data destruction for auditing purposes.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 rounded-lg text-purple-500" style="background-color: hsl(var(--muted) / 0.5);">
+                            <i data-lucide="file-check" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Multiple Algorithms</h3>
+                    </div>
+                    <p class="leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                        Choose from various wiping algorithms including DoD, Gutmann, and custom patterns for different security needs.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 rounded-lg text-yellow-500" style="background-color: hsl(var(--muted) / 0.5);">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Fast & Efficient</h3>
+                    </div>
+                    <p class="leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                        Optimized algorithms ensure quick data wiping without compromising security, saving valuable time.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 rounded-lg text-cyan-500" style="background-color: hsl(var(--muted) / 0.5);">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Cross-Platform</h3>
+                    </div>
+                    <p class="leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                        Unified experience across Windows, Linux, and Android platforms with consistent security standards.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 rounded-lg text-orange-500" style="background-color: hsl(var(--muted) / 0.5);">
+                            <i data-lucide="eye" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Real-time Monitoring</h3>
+                    </div>
+                    <p class="leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                        Watch the wiping process in real-time with progress indicators and detailed status information.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Trust Section -->
+            <div class="mt-20">
+                <div class="rounded-lg p-12 text-center" style="background: linear-gradient(to right, hsl(var(--primary) / 0.05), hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05)); border: 1px solid hsl(var(--primary) / 0.2);">
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <h3 class="text-3xl font-bold">Trusted by IT Professionals Worldwide</h3>
+                        <p class="text-xl" style="color: hsl(var(--muted-foreground));">
+                            Join thousands of organizations who trust NoTrace for secure data disposal. 
+                            Our solution has been tested and certified by leading cybersecurity firms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section with Animations -->
+    <section id="how-it-works" class="py-20 lg:py-32" style="background-color: hsl(var(--muted) / 0.3);">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold">
+                    How It Works
+                </h2>
+                <p class="text-xl max-w-3xl mx-auto" style="color: hsl(var(--muted-foreground));">
+                    Secure data wiping in four simple steps. Our streamlined process ensures 
+                    maximum security with minimal complexity.
+                </p>
+            </div>
+
+            <div class="steps-grid grid gap-8 mb-16">
+                <!-- Step 1 -->
+                <div class="step-card rounded-lg border-2 overflow-hidden relative h-full" style="background-color: hsl(var(--card)); border-color: rgba(59, 130, 246, 0.3);">
+                    <div class="step-gradient absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 opacity-50"></div>
+                    <div class="relative p-6 text-center space-y-4 h-full flex flex-col">
+                        <div class="text-4xl font-bold opacity-60" style="color: hsl(var(--primary));">01</div>
+                        <div class="flex justify-center">
+                            <div class="step-icon p-4 rounded-full" style="background-color: hsl(var(--primary) / 0.1);">
+                                <i data-lucide="download" class="h-8 w-8" style="color: hsl(var(--primary));"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 space-y-3">
+                            <h3 class="step-title text-xl font-semibold">Download & Install</h3>
+                            <p class="step-description leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                                Choose your platform and download NoTrace. No registration required, completely free to use.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card rounded-lg border-2 overflow-hidden relative h-full" style="background-color: hsl(var(--card)); border-color: rgba(147, 51, 234, 0.3);">
+                    <div class="step-gradient absolute inset-0 bg-gradient-to-br from-purple-500/20 to-purple-600/20 opacity-50"></div>
+                    <div class="relative p-6 text-center space-y-4 h-full flex flex-col">
+                        <div class="text-4xl font-bold opacity-60" style="color: hsl(var(--primary));">02</div>
+                        <div class="flex justify-center">
+                            <div class="step-icon p-4 rounded-full" style="background-color: hsl(var(--primary) / 0.1);">
+                                <i data-lucide="hard-drive" class="h-8 w-8" style="color: hsl(var(--primary));"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 space-y-3">
+                            <h3 class="step-title text-xl font-semibold">Select Target Device</h3>
+                            <p class="step-description leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                                Choose the storage device or partition you want to wipe. Preview device information before proceeding.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card rounded-lg border-2 overflow-hidden relative h-full" style="background-color: hsl(var(--card)); border-color: rgba(249, 115, 22, 0.3);">
+                    <div class="step-gradient absolute inset-0 bg-gradient-to-br from-orange-500/20 to-orange-600/20 opacity-50"></div>
+                    <div class="relative p-6 text-center space-y-4 h-full flex flex-col">
+                        <div class="text-4xl font-bold opacity-60" style="color: hsl(var(--primary));">03</div>
+                        <div class="flex justify-center">
+                            <div class="step-icon p-4 rounded-full" style="background-color: hsl(var(--primary) / 0.1);">
+                                <i data-lucide="trash-2" class="h-8 w-8" style="color: hsl(var(--primary));"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 space-y-3">
+                            <h3 class="step-title text-xl font-semibold">Configure & Execute</h3>
+                            <p class="step-description leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                                Select wiping algorithm, number of passes, and verification options. Start the secure wiping process.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-card rounded-lg border-2 overflow-hidden relative h-full" style="background-color: hsl(var(--card)); border-color: rgba(34, 197, 94, 0.3);">
+                    <div class="step-gradient absolute inset-0 bg-gradient-to-br from-green-500/20 to-green-600/20 opacity-50"></div>
+                    <div class="relative p-6 text-center space-y-4 h-full flex flex-col">
+                        <div class="text-4xl font-bold opacity-60" style="color: hsl(var(--primary));">04</div>
+                        <div class="flex justify-center">
+                            <div class="step-icon p-4 rounded-full" style="background-color: hsl(var(--primary) / 0.1);">
+                                <i data-lucide="check-circle" class="h-8 w-8" style="color: hsl(var(--primary));"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 space-y-3">
+                            <h3 class="step-title text-xl font-semibold">Verify & Report</h3>
+                            <p class="step-description leading-relaxed" style="color: hsl(var(--muted-foreground));">
+                                Receive cryptographic verification of complete data destruction with detailed compliance reporting.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Standards -->
+            <div class="rounded-lg border-2 p-8" style="background-color: hsl(var(--background)); border-color: hsl(var(--border));">
+                <div class="text-center space-y-6">
+                    <h3 class="text-2xl font-bold">Certified Security Standards</h3>
+                    <p class="max-w-2xl mx-auto" style="color: hsl(var(--muted-foreground));">
+                        NoTrace meets and exceeds international data destruction standards, 
+                        ensuring your organization stays compliant with global regulations.
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pt-6">
+                        <div class="text-center space-y-2">
+                            <div class="text-lg font-bold" style="color: hsl(var(--primary));">DoD 5220.22-M</div>
+                            <div class="text-sm" style="color: hsl(var(--muted-foreground));">US Military</div>
+                        </div>
+                        <div class="text-center space-y-2">
+                            <div class="text-lg font-bold" style="color: hsl(var(--primary));">NIST SP 800-88</div>
+                            <div class="text-sm" style="color: hsl(var(--muted-foreground));">US Government</div>
+                        </div>
+                        <div class="text-center space-y-2">
+                            <div class="text-lg font-bold" style="color: hsl(var(--primary));">GDPR Article 17</div>
+                            <div class="text-sm" style="color: hsl(var(--muted-foreground));">European Union</div>
+                        </div>
+                        <div class="text-center space-y-2">
+                            <div class="text-lg font-bold" style="color: hsl(var(--primary));">Common Criteria</div>
+                            <div class="text-sm" style="color: hsl(var(--muted-foreground));">ISO/IEC 15408</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background-color: hsl(var(--muted) / 0.5);" class="border-t">
+        <div class="container mx-auto px-4 lg:px-8">
+            <!-- Main Footer Content -->
+            <div class="py-16">
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+                    <!-- Company Info -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-lg text-white" style="background-color: hsl(var(--primary));">
+                                <i data-lucide="shield" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-2xl font-bold">NoTrace</span>
+                        </div>
+                        <p class="leading-relaxed max-w-md" style="color: hsl(var(--muted-foreground));">
+                            The world's most trusted data wiping solution. Secure, verifiable, and compliant data destruction 
+                            for IT asset recycling and device disposal.
+                        </p>
+                        <div class="flex items-center gap-3 text-sm">
+                            <i data-lucide="mail" class="h-4 w-4" style="color: hsl(var(--muted-foreground));"></i>
+                            <span style="color: hsl(var(--muted-foreground));">ctrlaltwinofficial@gmail.com</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer Links -->
+                    <div class="space-y-4">
+                        <h4 class="font-semibold">Product</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#download" class="transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">Download</a></li>
+                            <li><a href="#features" class="transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">Features</a></li>
+                            <li><a href="#how-it-works" class="transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">How It Works</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="font-semibold">Support</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">Help Center</a></li>
+                            <li><a href="#" class="transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">Contact Support</a></li>
+                            <li><a href="#" class="transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">Community</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="font-semibold">Company</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">About Us</a></li>
+                            <li><a href="#" class="transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">Privacy Policy</a></li>
+                            <li><a href="#" class="transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))'" onmouseout="this.style.color='hsl(var(--muted-foreground))'">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Footer -->
+            <div class="border-t py-8" style="border-color: hsl(var(--border));">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm" style="color: hsl(var(--muted-foreground));">
+                    <div>© 2024 NoTrace. All rights reserved.</div>
+                    <div class="flex items-center gap-6">
+                        <span>DoD 5220.22-M Compliant</span>
+                        <span>GDPR Ready</span>
+                        <span>SOC 2 Certified</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Notice -->
+            <div class="border-t -mx-4 lg:-mx-8 px-4 lg:px-8 py-6" style="border-color: hsl(var(--border)); background-color: hsl(var(--primary) / 0.05);">
+                <div class="text-center text-sm max-w-4xl mx-auto" style="color: hsl(var(--muted-foreground));">
+                    <strong style="color: hsl(var(--foreground));">Security Notice:</strong> NoTrace operates entirely offline and does not collect, 
+                    transmit, or store any user data. All wiping operations are performed locally on your device 
+                    with full user control and verification.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Credit Section -->
+    <div class="credit-text">
+        Made by <strong>Ctrl alt win</strong>
+    </div>
+
+    <!-- Chatbot Button -->
+    <button class="chatbot-button" onclick="toggleChatbot()" data-testid="button-chatbot">
+        <i data-lucide="message-circle" class="w-6 h-6"></i>
+    </button>
+
+    <!-- Chatbot Modal -->
+    <div class="chatbot-modal" id="chatbot-modal">
+        <!-- Header -->
+        <div class="chatbot-header">
+            <div class="flex items-center gap-2">
+                <i data-lucide="bot" class="w-5 h-5"></i>
+                <h3>NoTrace Assistant</h3>
+            </div>
+            <button class="chatbot-close" onclick="closeChatbot()" data-testid="button-chatbot-close">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="chatbot-content">
+            <!-- Tabs -->
+            <div class="chatbot-tabs">
+                <button class="chatbot-tab active" onclick="switchTab('chat')" data-testid="tab-chat">Chat</button>
+                <button class="chatbot-tab" onclick="switchTab('faq')" data-testid="tab-faq">FAQs</button>
+            </div>
+
+            <!-- Chat Tab -->
+            <div class="chatbot-tab-content active" id="chat-content">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="chat-message bot">
+                        <div>👋 Hi! I'm your NoTrace assistant. Ask me anything about our data wiping solution!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Tab -->
+            <div class="chatbot-tab-content" id="faq-content">
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>What is NoTrace and how does it work?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-4 h-4"></i>
+                    </div>
+                    <div class="faq-answer">
+                        NoTrace is a military-grade data wiping tool that permanently erases data from storage devices. It uses DoD 5220.22-M compliant algorithms with multiple overwrite passes to ensure complete data destruction, making it impossible to recover deleted information.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>Which platforms does NoTrace support?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-4 h-4"></i>
+                    </div>
+                    <div class="faq-answer">
+                        NoTrace is available for Windows (10/11, 64-bit), Linux (Ubuntu 18+, CentOS 7+, and equivalent distributions), and Android (8.0+, API 26). All versions maintain the same security standards and compliance certifications.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>Is NoTrace really free to use?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-4 h-4"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! NoTrace is completely free for personal and commercial use. No registration required, no hidden fees, and no limitations on the number of devices you can wipe. We also offer enterprise solutions for organizations requiring bulk licensing and custom integrations.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>How secure is the data wiping process?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-4 h-4"></i>
+                    </div>
+                    <div class="faq-answer">
+                        NoTrace uses military-grade security standards including DoD 5220.22-M, NIST SP 800-88, and meets GDPR Article 17 requirements. Our algorithms perform multiple overwrite passes with random patterns, making data recovery impossible even with advanced forensic tools.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>Can I get a verification report after wiping?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-4 h-4"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Absolutely! NoTrace generates detailed compliance reports with cryptographic proof of data destruction. These reports include timestamps, wiping algorithms used, number of passes, and verification checksums - perfect for auditing and compliance purposes.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>How long does the wiping process take?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-4 h-4"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Wiping time depends on your device size and chosen algorithm. Our optimized algorithms balance speed with security - typically 15-45 minutes for SSDs and 1-3 hours for larger HDDs. You can monitor progress in real-time with detailed status information.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>What types of storage devices can NoTrace wipe?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-4 h-4"></i>
+                    </div>
+                    <div class="faq-answer">
+                        NoTrace supports all major storage types: HDDs, SSDs, USB drives, SD cards, smartphones, tablets, and enterprise storage systems. It works with NTFS, FAT32, exFAT, ext4, and other file systems across different device types.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>Is technical support available?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-4 h-4"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! We provide comprehensive support through our Help Center, community forums, and direct contact options. Enterprise customers receive priority support with dedicated technical assistance and custom integration help.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Container -->
+            <div class="chatbot-input-container">
+                <div class="chatbot-input-group">
+                    <input 
+                        type="text" 
+                        class="chatbot-input" 
+                        placeholder="Type your question about NoTrace..."
+                        id="chatbot-input"
+                        data-testid="input-chatbot"
+                        onkeypress="handleChatKeyPress(event)"
+                    >
+                    <button class="chatbot-send" onclick="sendMessage()" data-testid="button-send-message">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+
+        // Smooth scrolling function
+        function scrollToSection(selector) {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobile-nav');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            
+            mobileNav.classList.toggle('active');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        }
+
+        function closeMobileMenu() {
+            const mobileNav = document.getElementById('mobile-nav');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            
+            mobileNav.classList.remove('active');
+            menuIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+        }
+
+        // Download platform functionality
+        function downloadPlatform(platform) {
+            alert(`Downloading NoTrace for ${platform}...\n\nThis is a demo. In the real application, this would start the download for the ${platform} version.`);
+            
+            // In real implementation, this would trigger actual downloads:
+            // const urls = {
+            //     'Windows': '/downloads/notrace-windows.exe',
+            //     'Linux': '/downloads/notrace-linux.tar.gz',
+            //     'Android': '/downloads/notrace-android.apk'
+            // };
+            // const link = document.createElement('a');
+            // link.href = urls[platform];
+            // link.download = '';
+            // document.body.appendChild(link);
+            // link.click();
+            // document.body.removeChild(link);
+        }
+
+        // Theme toggle functionality (optional)
+        function toggleTheme() {
+            document.documentElement.classList.toggle('light');
+            const isLight = document.documentElement.classList.contains('light');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+
+        // Load saved theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.add('light');
+            }
+        });
+
+        // Add scroll-based header background
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.backgroundColor = 'hsl(var(--background) / 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.backgroundColor = 'hsl(var(--background) / 0.95)';
+            }
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.feature-card, .step-card, .card-hover');
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+
+        // Chatbot functionality
+        function toggleChatbot() {
+            const modal = document.getElementById('chatbot-modal');
+            modal.classList.toggle('active');
+            
+            // Initialize Lucide icons for the modal content
+            setTimeout(() => {
+                lucide.createIcons();
+            }, 100);
+        }
+
+        function closeChatbot() {
+            const modal = document.getElementById('chatbot-modal');
+            modal.classList.remove('active');
+        }
+
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.chatbot-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.chatbot-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            if (tabName === 'chat') {
+                document.getElementById('chat-content').classList.add('active');
+            } else if (tabName === 'faq') {
+                document.getElementById('faq-content').classList.add('active');
+            }
+        }
+
+        function toggleFaq(faqItem) {
+            faqItem.classList.toggle('open');
+            
+            // Re-initialize icons after toggling
+            setTimeout(() => {
+                lucide.createIcons();
+            }, 50);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatbot-input');
+            const message = input.value.trim();
+            
+            if (message === '') return;
+
+            // Add user message to chat
+            addChatMessage(message, 'user');
+            
+            // Clear input
+            input.value = '';
+
+            // Simulate bot response after a short delay
+            setTimeout(() => {
+                const botResponse = generateBotResponse(message);
+                addChatMessage(botResponse, 'bot');
+            }, 1000);
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function addChatMessage(message, sender) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}`;
+            messageDiv.innerHTML = `<div>${message}</div>`;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function generateBotResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            // Simple keyword-based responses
+            if (message.includes('what') && message.includes('notrace')) {
+                return 'NoTrace is a military-grade data wiping tool that permanently erases data from storage devices using DoD 5220.22-M compliant algorithms. It ensures complete data destruction for secure IT asset recycling.';
+            }
+            
+            if (message.includes('platform') || message.includes('support')) {
+                return 'NoTrace supports Windows (10/11, 64-bit), Linux (Ubuntu 18+, CentOS 7+), and Android (8.0+). All versions maintain the same high security standards.';
+            }
+            
+            if (message.includes('free') || message.includes('cost') || message.includes('price')) {
+                return 'Yes! NoTrace is completely free for personal and commercial use. No registration required, no hidden fees. We also offer enterprise solutions for organizations.';
+            }
+            
+            if (message.includes('secure') || message.includes('security')) {
+                return 'NoTrace uses military-grade security with DoD 5220.22-M, NIST SP 800-88 compliance, and meets GDPR Article 17 requirements. Multiple overwrite passes make data recovery impossible.';
+            }
+            
+            if (message.includes('time') || message.includes('long') || message.includes('duration')) {
+                return 'Wiping time varies by device size and algorithm: typically 15-45 minutes for SSDs and 1-3 hours for larger HDDs. You can monitor progress in real-time.';
+            }
+            
+            if (message.includes('report') || message.includes('verification') || message.includes('proof')) {
+                return 'Yes! NoTrace generates detailed compliance reports with cryptographic proof of data destruction, perfect for auditing and compliance purposes.';
+            }
+            
+            if (message.includes('download') || message.includes('install')) {
+                return 'You can download NoTrace for free from our website. Just choose your platform (Windows, Linux, or Android) and click the download button. No registration required!';
+            }
+            
+            if (message.includes('help') || message.includes('support') || message.includes('contact')) {
+                return 'We provide comprehensive support through our Help Center, community forums, and direct contact. Enterprise customers get priority support with dedicated technical assistance.';
+            }
+            
+            if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+                return 'Hello! 👋 I\'m here to help you with any questions about NoTrace. Feel free to ask about our features, security standards, or how to get started!';
+            }
+            
+            // Default response
+            return 'I\'d be happy to help! You can ask me about NoTrace features, security standards, supported platforms, or check out our FAQs tab for common questions. You can also contact our support team for detailed assistance.';
+        }
+
+        // Close chatbot when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('chatbot-modal');
+            const button = document.querySelector('.chatbot-button');
+            
+            if (modal.classList.contains('active') && 
+                !modal.contains(event.target) && 
+                !button.contains(event.target)) {
+                closeChatbot();
+            }
+        });
+    </script>
+</body>
+</html>
