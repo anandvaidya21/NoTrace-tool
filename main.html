@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ctrl Alt Win</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    iframe {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Transparent overlay - adjust position */
+    .links {
+      position: fixed;
+      bottom: 22%;  /* screen ke neeche se distance */
+      left: 13%;
+      transform: translateX(0%);
+         /* button ki height jaisi */
+      cursor: pointer;
+      z-index: 10;
+      color: rgb(254, 255, 253); /* testing ke liye red transparent background */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Spline 3D Model -->
+<iframe src='https://my.spline.design/reactiveorb-5bBidLjbJLfB1zfRqUaRkDtl/' frameborder='0' width='100%' height='100%'>
+
+</iframe>
+
+
+    
+
+  <!-- Transparent overlay -->
+  <div class="links" id="clickHereBtn">
+    <a href="index.html">Click Here</a></div>
+  </div>
+
+
+
+  <script>
+    document.getElementById("clickHereBtn").addEventListener("click", function() {
+      window.location.href = "main.html"; 
+    });
+  </script>
+
+</body>
+</html>
